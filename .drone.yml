@@ -1,0 +1,95 @@
+pipeline:
+
+  testsuite:
+    image: docker:18.05
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker run --rm -v $(pwd):/data -w /data hashicorp/terraform fmt --diff --check
+    when:
+      event: push
+    secrets:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+
+  run-testrunner-tests:
+    image: quay.io/ukhomeofficedigital/tf-testrunner
+    commands:
+      - python -m unittest tests/e2e.py
+    secrets:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+    when:
+      event: push
+
+  init:
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:5
+    pull: true
+    commands:
+      - export MOCK_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export MOCK_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - export AWS_ACCESS_KEY_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export AWS_SECRET_ACCESS_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - echo "provider \"aws\" { region = \"eu-west-2\" }" > provider.tf
+      - echo "terraform { backend \"s3\" {} }" > backend.tf
+      - echo "terragrunt = { remote_state { backend = \"s3\"  config {  bucket = \"dacc-dq-test-coral-team\"  region = \"eu-west-2\" dynamodb_table = \"terraform-state\"  key = \"notprod/internal-reporting-pieline.tfstate\"  encrypt = true  } } }" > terraform.tfvars
+      - terragrunt init
+    when:
+      event: push
+    secrets:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+
+  validate:
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:5
+    commands:
+      - export MOCK_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export MOCK_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - export AWS_ACCESS_KEY_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export AWS_SECRET_ACCESS_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - terragrunt validate
+    when:
+      event: push
+    secrets:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+
+  plan:
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:5
+    pull: true
+    commands:
+      - export MOCK_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export MOCK_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - export AWS_ACCESS_KEY_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export AWS_SECRET_ACCESS_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - terragrunt plan -lock=false -out=plan
+    when:
+      event: push
+    secrets:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+
+
+  apply:
+    image: quay.io/ukhomeofficedigital/dq-docker-terragrunt:5
+    pull: true
+    commands:
+      - export MOCK_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export MOCK_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - export AWS_ACCESS_KEY_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export AWS_SECRET_ACCESS_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
+      - terragrunt apply -auto-approve -parallelism=50 plan
+    when:
+      event: push
+    secrets:
+      - TEST_AWS_ACCESS_KEY_ID
+      - TEST_AWS_SECRET_ACCESS_KEY
+
+  sonar-scanner:
+    image: quay.io/ukhomeofficedigital/sonar-scanner:v3.0.3
+    when:
+      event:
+        - push
+        - pull_request
+      environment:
+        exclude: [ production ]
