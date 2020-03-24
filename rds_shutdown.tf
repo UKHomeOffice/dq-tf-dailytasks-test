@@ -108,7 +108,7 @@ resource "aws_iam_policy" "rds_shutdown" {
           "Action": "pi:*",
           "Effect": "Allow",
           "Resource": "arn:aws:pi:*:*:metrics/rds/*"
-        }
+        },
         {
           "Action": "iam:CreateServiceLinkedRole",
           "Effect": "Allow",
