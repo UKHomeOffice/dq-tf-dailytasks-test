@@ -16,6 +16,8 @@ pipeline:
     image: quay.io/ukhomeofficedigital/tf-testrunner
     commands:
       - python -m unittest tests/e2e.py
+      - export MOCK_ID=$${TEST_AWS_ACCESS_KEY_ID}
+      - export MOCK_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
       - export AWS_ACCESS_KEY_ID=$${TEST_AWS_ACCESS_KEY_ID}
       - export AWS_SECRET_ACCESS_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
     secrets:
