@@ -90,24 +90,38 @@ resource "aws_iam_policy" "rds_shutdown" {
   description = "IAM policy for shutting down rds"
 
   policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "",
-            "Effect": "Allow",
-            "Action": [
-              "rds:DescribeDBInstances",
-              "rds:StartDBInstances",
-              "rds:StopDBInstances",
-              "rds:CopyDBSnapshot",
-              "rds:CreateDBSnapshot",
-              "rds:DeleteDBSnapshot"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Action": [
+                  "rds:*",
+                  "cloudwatch:GetMetricStatistics",
+                  "logs:DescribeLogStreams",
+                  "logs:GetLogEvents"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+          },
+          {
+              "Action": "pi:*",
+              "Effect": "Allow",
+              "Resource": "arn:aws:pi:*:*:metrics/rds/*"
+          },
+          {
+              "Action": "iam:CreateServiceLinkedRole",
+              "Effect": "Allow",
+              "Resource": "*",
+              "Condition": {
+                  "StringLike": {
+                      "iam:AWSServiceName": [
+                          "rds.amazonaws.com"
+                      ]
+                  }
+              }
+          }
+      ]
+  }
 EOF
 }
 
