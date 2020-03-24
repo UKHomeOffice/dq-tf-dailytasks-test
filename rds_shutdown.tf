@@ -114,7 +114,7 @@ resource "aws_cloudwatch_event_rule" "daily_rds_shutdown" {
   is_enabled          = "${var.naming_suffix == "apps-prod-dq" ? "false" : "false"}"
   name                = "daily-rds-shutdown"
   description         = "triggers daily RDS shutdown"
-  schedule_expression = "cron(08 30 * * ? *)"
+  schedule_expression = "cron(15 11 * * ? *)"
 }
 
 # Defines target for the rule - the Lambda function to trigger
