@@ -36,7 +36,7 @@ pipeline:
       - export AWS_SECRET_ACCESS_KEY=$${TEST_AWS_SECRET_ACCESS_KEY}
       - echo "provider \"aws\" { region = \"eu-west-2\" }" > provider.tf
       - echo "terraform { backend \"s3\" {} }" > backend.tf
-      - echo "terragrunt = { remote_state { backend = \"s3\"  config {  bucket = \"dacc-dq-test-coral-team\"  region = \"eu-west-2\" dynamodb_table = \"terraform-state\"  key = \"notprod/internal-reporting-pieline.tfstate\"  encrypt = true  } } }" > terraform.tfvars
+      - echo "terragrunt = { remote_state { backend = \"s3\"  config {  bucket = \"dacc-dq-test-coral-team\"  region = \"eu-west-2\" dynamodb_table = \"terraform-state\"  key = \"test/dailytasks.tfstate\"  encrypt = true  } } }" > terraform.tfvars
       - terragrunt init
     when:
       event: push
