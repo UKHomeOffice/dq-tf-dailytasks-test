@@ -174,7 +174,7 @@ resource "aws_cloudwatch_event_rule" "daily_rds_shutdown" {
   is_enabled          = "true"
   name                = "daily-rds-shutdown"
   description         = "triggers daily RDS shutdown"
-  schedule_expression = "cron(10 12 * * ? *)"
+  schedule_expression = "cron(30 12 * * ? *)"
 }
 
 # Defines target for the rule - the Lambda function to trigger
