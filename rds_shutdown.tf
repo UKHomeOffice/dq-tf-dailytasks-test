@@ -120,7 +120,6 @@ resource "aws_iam_policy" "rds_shutdown" {
               ]
             }
           }
-
         }
     ]
 }
