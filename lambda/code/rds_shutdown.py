@@ -11,21 +11,21 @@ def lambda_handler(event, context):
 
 
     instanceOne='dev-int-tableau-postgres-internal-tableau-apps-test-dq'
-    instanceTwo='ext-tableau-postgres-external-tableau-apps-test-dq'
-    instanceThree='fms-postgres-fms-apps-test-dq'
-    instanceFour='int-tableau-postgres-internal-tableau-apps-test-dq'
-    instanceFive='mds-rds-mssql2012-dataingest-apps-test-dq'
-    instanceSix='postgres-datafeeds-apps-test-dq'
+    # instanceTwo='ext-tableau-postgres-external-tableau-apps-test-dq'
+    # instanceThree='fms-postgres-fms-apps-test-dq'
+    # instanceFour='int-tableau-postgres-internal-tableau-apps-test-dq'
+    # instanceFive='mds-rds-mssql2012-dataingest-apps-test-dq'
+    # instanceSix='postgres-datafeeds-apps-test-dq'
 
 
     print('RDS Instannces stopping...')
 
     shutdown1=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceOne)
-    shutdown2=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceTwo)
-    shutdown3=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceThree)
-    shutdown4=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceFour)
-    shutdown5=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceFive)
-    shutdown6=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceSix)
+    # shutdown2=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceTwo)
+    # shutdown3=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceThree)
+    # shutdown4=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceFour)
+    # shutdown5=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceFive)
+    # shutdown6=rds_inst.stop_db_instance(DBInstanceIdentifier=instanceSix)
 
 
 
