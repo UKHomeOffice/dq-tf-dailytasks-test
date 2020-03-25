@@ -3,7 +3,7 @@ resource "aws_cloudwatch_event_target" "rds_shutdown" {
   arn  = "${aws_lambda_function.rds_shutdown.arn}"
 
   input = <<DOC
-  {
+{
   "instances": [
     "dev-int-tableau-postgres-internal-tableau-apps-test-dq",
     "ext-tableau-postgres-external-tableau-apps-test-dq",
@@ -19,5 +19,5 @@ DOC
 resource "aws_cloudwatch_event_rule" "rds_shutdown" {
   name                = "rds-shutdown"
   description         = "Shutdown RDS Instances"
-  schedule_expression = "cron(15 13 * * ? *)"
+  schedule_expression = "cron(05 15 * * ? *)"
 }
