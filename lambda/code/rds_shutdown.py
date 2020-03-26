@@ -30,6 +30,6 @@ def lambda_handler(event, context):
 
             print("{0} status: {1}".format(db, response['DBInstanceStatus']))
         except Exception as e:
-            print("Exception: {0}".format(e))
+            print('RDS already in a stopped state: '+ (rds_instance['DBInstanceIdentifier']))
 
     return "Completed!"
