@@ -9,7 +9,8 @@ resource "aws_cloudwatch_event_target" "rds_shutdown" {
     "ext-tableau-postgres-external-tableau-apps-test-dq",
     "fms-postgres-fms-apps-test-dq",
     "mds-rds-mssql2012-dataingest-apps-test-dq",
-    "postgres-datafeeds-apps-test-dq"
+    "postgres-datafeeds-apps-test-dq",
+    "postgres-internal-tableau-apps-test-dq"
   ],
   "action": "stop"
 }
