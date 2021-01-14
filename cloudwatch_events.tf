@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_target" "rds_shutdown" {
-  rule = "${aws_cloudwatch_event_rule.rds_shutdown.name}"
-  arn  = "${aws_lambda_function.rds_shutdown.arn}"
+  rule = aws_cloudwatch_event_rule.rds_shutdown.name
+  arn  = aws_lambda_function.rds_shutdown.arn
 
   input = <<DOC
 {
@@ -24,8 +24,8 @@ resource "aws_cloudwatch_event_rule" "rds_shutdown" {
 }
 
 resource "aws_cloudwatch_event_target" "ec2_shutdown" {
-  rule = "${aws_cloudwatch_event_rule.ec2_shutdown.name}"
-  arn  = "${aws_lambda_function.ec2_shutdown.arn}"
+  rule = aws_cloudwatch_event_rule.ec2_shutdown.name
+  arn  = aws_lambda_function.ec2_shutdown.arn
 
   input = <<DOC
   {

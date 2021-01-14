@@ -7,9 +7,9 @@ data "archive_file" "ec2_shutdown_zip" {
 resource "aws_lambda_function" "ec2_shutdown" {
   filename         = "${path.module}/lambda/package/ec2_shutdown.zip"
   function_name    = "${var.pipeline_name}-${var.namespace}-ec2-shutdown"
-  role             = "${aws_iam_role.ec2_shutdown.arn}"
+  role             = aws_iam_role.ec2_shutdown.arn
   handler          = "ec2_shutdown.lambda_handler"
-  source_code_hash = "${data.archive_file.ec2_shutdown_zip.output_base64sha256}"
+  source_code_hash = data.archive_file.ec2_shutdown_zip.output_base64sha256
   runtime          = "python3.7"
   timeout          = "900"
   memory_size      = "128"
@@ -68,8 +68,8 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_shutdown" {
-  role       = "${aws_iam_role.ec2_shutdown.name}"
-  policy_arn = "${aws_iam_policy.ec2_shutdown.arn}"
+  role       = aws_iam_role.ec2_shutdown.name
+  policy_arn = aws_iam_policy.ec2_shutdown.arn
 }
 
 resource "aws_cloudwatch_log_group" "lambda_ec2_shutdown" {
@@ -107,6 +107,6 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_ec2_shutdown_logs" {
-  role       = "${aws_iam_role.ec2_shutdown.name}"
-  policy_arn = "${aws_iam_policy.lambda_ec2_shutdown_logging.arn}"
+  role       = aws_iam_role.ec2_shutdown.name
+  policy_arn = aws_iam_policy.lambda_ec2_shutdown_logging.arn
 }
