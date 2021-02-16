@@ -13,6 +13,7 @@ steps:
   image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
   commands:
   - docker run --rm -v $(pwd):/data -w /data hashicorp/terraform fmt --diff --check && echo $?
+  environment:
     TEST_AWS_ACCESS_KEY_ID:
       from_secret: TEST_AWS_ACCESS_KEY_ID
     TEST_AWS_SECRET_ACCESS_KEY:
