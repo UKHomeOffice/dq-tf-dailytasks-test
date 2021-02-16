@@ -7,7 +7,7 @@ data "archive_file" "rds_shutdown_zip" {
 resource "aws_lambda_function" "rds_shutdown" {
   filename         = "${path.module}/lambda/package/rds_shutdown.zip"
   function_name    = "${var.pipeline_name}-${var.namespace}-rds-shutdown"
-  role             = "aws_iam_role.rds_shutdown.arn
+  role             = aws_iam_role.rds_shutdown.arn
   handler          = "rds_shutdown.lambda_handler"
   source_code_hash = data.archive_file.rds_shutdown_zip.output_base64sha256
   runtime          = "python3.7"
