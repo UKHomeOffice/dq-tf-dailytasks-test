@@ -17,7 +17,7 @@ DOC
 }
 
 resource "aws_cloudwatch_event_rule" "rds_shutdown" {
-  name                = "rds_shutdown"
+  name                = "rds-shutdown"
   description         = "Shutdown RDS Instances"
   schedule_expression = "cron(05 15 * * ? *)"
   is_enabled          = "false"
