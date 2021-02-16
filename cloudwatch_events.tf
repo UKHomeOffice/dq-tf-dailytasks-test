@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_target" "rds_shutdown" {
   rule = aws_cloudwatch_event_rule.rds_shutdown.name
   arn  = aws_lambda_function.rds_shutdown.arn
-}
+
   input = <<DOC
 {
   "instances": [
