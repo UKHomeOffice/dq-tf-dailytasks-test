@@ -19,7 +19,6 @@ resource "aws_cloudwatch_event_rule" "rds_shutdown" {
   description         = "Shutdown RDS Instances"
   schedule_expression = "cron(05 15 * * ? *)"
   is_enabled          = "false"
-  version             = "~> 3.0"
 }
 
 resource "aws_cloudwatch_event_target" "ec2_shutdown" {
