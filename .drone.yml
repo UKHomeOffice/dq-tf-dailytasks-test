@@ -1,16 +1,23 @@
-pipeline:
+---
+kind: pipeline
+name: default
+type: kubernetes
+platform:
+  os: linux
+  arch: amd64
 
-  testsuite:
-    image: docker:18.05
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-    commands:
-      - docker run --rm -v $(pwd):/data -w /data hashicorp/terraform fmt --diff --check
-    when:
-      event: push
-    secrets:
-      - TEST_AWS_ACCESS_KEY_ID
-      - TEST_AWS_SECRET_ACCESS_KEY
+steps:
+- name: testsuite
+  pull: if-not-exists
+  image: 340268328991.dkr.ecr.eu-west-2.amazonaws.com/acp/dind
+  commands:
+    - /usr/local/bin/wait
+    - docker run --rm -v $(pwd):/data -w /data hashicorp/terraform fmt --diff --check
+  when:
+    event: push
+  secrets:
+    - TEST_AWS_ACCESS_KEY_ID
+    - TEST_AWS_SECRET_ACCESS_KEY
 
   # run-testrunner-tests:
   #   image: quay.io/ukhomeofficedigital/tf-testrunner
